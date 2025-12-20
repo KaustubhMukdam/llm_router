@@ -1,0 +1,21 @@
+thresholds:
+  small_max_tokens: 256
+  medium_context_tokens: 512
+  classifier_confidence_min: 0.6
+
+rules:
+  - name: "classification_to_small"
+    condition:
+      task: "classification"
+      max_tokens: 256
+    route_to: "small"
+
+  - name: "large_context_to_medium"
+    condition:
+      min_context_tokens: 512
+    route_to: "medium"
+
+  - name: "high_risk_to_api"
+    condition:
+      risk_level: "high"
+    route_to: "api"
