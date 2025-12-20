@@ -6,20 +6,36 @@ from routing.confidence import evaluate_confidence, ConfidenceDecision
 from classifier.features import TaskType
 
 
+def apply_fallback(
+    *,
+    risk_level: str,
+    max_latency_ms: int,
+) -> str:
+    """
+    Deterministic fallback policy.
+    """
+    if risk_level == "high":
+        return "api"
+
+    if max_latency_ms < 1000:
+        return "medium"
+
+    return "api"
+
+
 def decide_model_tier(
     *,
     features: dict,
     context_token_count: int,
     risk_level: str,
+    max_latency_ms: int,
     classifier: Classifier,
 ) -> Optional[str]:
     """
     Decide model tier using:
-    1. Static routing rules (top-down, first match wins)
-    2. Classifier + confidence evaluation (if no rule matches)
-
-    Returns:
-        "small" | "medium" | "api" | None
+    1. Static routing rules
+    2. Classifier + confidence
+    3. Explicit fallback (if still undecided)
     """
     # ---- 1. Static routing rules ----
     config = get_config()
@@ -66,7 +82,8 @@ def decide_model_tier(
         if prediction.predicted_task == TaskType.GENERATION:
             return "api"
 
-        return None
-
-    # ---- 3. Escalation (no fallback yet) ----
-    return None
+    # ---- 3. Fallback ----
+    return apply_fallback(
+        risk_level=risk_level,
+        max_latency_ms=max_latency_ms,
+    )

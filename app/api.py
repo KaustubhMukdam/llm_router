@@ -13,7 +13,6 @@ from inference.api import execute_api
 
 router = APIRouter()
 
-# Temporary classifier instance (real model comes later)
 _classifier = Classifier(StubClassifier())
 
 
@@ -29,19 +28,18 @@ def generate(request: GenerateRequest) -> GenerateResponse:
         features=features.model_dump(),
         context_token_count=features.context_length,
         risk_level=request.constraints.risk_level,
+        max_latency_ms=request.constraints.max_latency_ms,
         classifier=_classifier,
     )
 
-    # Default empty response (no routing decision)
-    response_text = ""
-
+    # model_tier is guaranteed non-null after fallback
     if model_tier == "small":
         response_text, _, _, _ = execute_small(request.prompt, request.context or [])
 
     elif model_tier == "medium":
         response_text, _, _, _ = execute_medium(request.prompt, request.context or [])
 
-    elif model_tier == "api":
+    else:  # "api"
         response_text, _, _, _ = execute_api(request.prompt, request.context or [])
 
     return GenerateResponse(
