@@ -5,3 +5,4 @@ pydantic
 pyyaml
 requests
 python-dotenv
+groq
