@@ -5,6 +5,7 @@ Defines the output structure returned by the /generate endpoint.
 
 from enum import Enum
 from pydantic import BaseModel, Field
+from typing import Optional
 
 
 class ModelTier(str, Enum):
@@ -23,7 +24,7 @@ class TokenUsage(BaseModel):
 class GenerateResponse(BaseModel):
     """Response payload from the /generate endpoint."""
     response: str
-    model_used: ModelTier
+    model_used: Optional[ModelTier]
     tokens_used: TokenUsage = Field(default_factory=TokenUsage)
     estimated_cost_usd: float = Field(default=0.0, ge=0.0)
     cache_hit: bool = Field(default=False)
