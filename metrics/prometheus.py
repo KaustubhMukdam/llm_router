@@ -33,3 +33,16 @@ COST_TOTAL = Counter(
     "Total estimated cost in USD per model tier",
     ["model_tier"],
 )
+
+# --- Cache Metrics ---
+CACHE_HITS = Counter(
+    "llm_router_cache_hits_total",
+    "Total cache hits per model tier",
+    ["model_tier"],
+)
+
+CACHE_MISSES = Counter(
+    "llm_router_cache_misses_total",
+    "Total cache misses per model tier",
+    ["model_tier"],
+)
