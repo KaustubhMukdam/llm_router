@@ -24,8 +24,11 @@ def execute_medium(prompt: str, context: List[str]) -> Tuple[str, int, int, floa
                 "model": model_name,
                 "prompt": full_prompt,
                 "stream": False,
+                "options": {
+                    "num_predict": 300
+                }
             },
-            timeout=120,
+            timeout=300,
         )
         resp.raise_for_status()
         data = resp.json()

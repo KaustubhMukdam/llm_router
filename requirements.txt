@@ -6,3 +6,4 @@ pyyaml
 requests
 python-dotenv
 groq
+prometheus_client

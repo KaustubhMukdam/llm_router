@@ -24,6 +24,9 @@ def execute_small(prompt: str, context: List[str]) -> Tuple[str, int, int, float
                 "model": model_name,
                 "prompt": full_prompt,
                 "stream": False,
+                "options": {
+                    "num_predict": 150
+                }
             },
             timeout=60,
         )
