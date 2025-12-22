@@ -13,5 +13,5 @@ class StubClassifier(ClassifierProtocol):
     def predict(self, features: FeatureVector) -> ClassifierPrediction:
         return ClassifierPrediction(
             predicted_task=TaskType.GENERATION,
-            confidence=0.0,
+            confidence=0.9,
         )

@@ -38,14 +38,29 @@ def normalize_text(text: str) -> str:
     return " ".join(text.strip().lower().split())
 
 
-def _cache_key(model_tier: str, prompt: str, context: list[str]) -> str:
+def _cache_key(
+    model_tier: str,
+    prompt: str,
+    context: list[str],
+    constraints: dict,
+) -> str:
     normalized_prompt = normalize_text(prompt)
 
     normalized_context = "\n".join(
         normalize_text(c) for c in context
     )
 
-    raw_key = f"{model_tier}:{normalized_prompt}:{normalized_context}"
+    # Normalize constraints explicitly
+    normalized_constraints = json.dumps(
+        {
+            "risk_level": constraints.get("risk_level"),
+            "max_cost_usd": constraints.get("max_cost_usd"),
+            "max_latency_ms": constraints.get("max_latency_ms"),
+        },
+        sort_keys=True,
+    )
+
+    raw_key = f"{model_tier}:{normalized_prompt}:{normalized_context}:{normalized_constraints}"
 
     return hashlib.sha256(raw_key.encode("utf-8")).hexdigest()
 
@@ -76,7 +91,12 @@ def generate(request: GenerateRequest) -> GenerateResponse:
         classifier=_classifier,
     )
 
-    cache_key = _cache_key(model_tier, request.prompt, request.context or [])
+    cache_key = _cache_key(
+        model_tier,
+        request.prompt,
+        request.context or [],
+        request.constraints.model_dump(),
+    )
     cached = cache_get(cache_key)
 
     if cached:

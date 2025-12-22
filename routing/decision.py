@@ -75,12 +75,21 @@ def decide_model_tier(
     confidence_decision = evaluate_confidence(prediction)
 
     if confidence_decision == ConfidenceDecision.ACCEPT:
+        # High-risk is never allowed locally
+        if risk_level == "high":
+            return "api"
+
         if prediction.predicted_task == TaskType.CLASSIFICATION:
             return "small"
+
         if prediction.predicted_task == TaskType.REASONING:
             return "medium"
+
         if prediction.predicted_task == TaskType.GENERATION:
-            return "api"
+            # Allow local generation when safe
+            if context_token_count <= config.routing.thresholds.small_max_tokens:
+                return "small"
+            return "medium"
 
     # ---- 3. Fallback ----
     return apply_fallback(
