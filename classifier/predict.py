@@ -3,9 +3,8 @@ Classifier prediction wrapper.
 Provides a unified interface for obtaining predictions from classifier implementations.
 """
 
-from classifier.features import FeatureVector
 from classifier.model import ClassifierProtocol, ClassifierPrediction
-
+from classifier.vectorizer import FeatureVectorizer
 
 class Classifier:
     """
@@ -24,7 +23,7 @@ class Classifier:
         """
         self._model = model
     
-    def predict(self, features: FeatureVector) -> ClassifierPrediction:
+    def predict(self, features: FeatureVectorizer) -> ClassifierPrediction:
         """
         Get prediction from the underlying classifier model.
         

@@ -9,6 +9,7 @@ from classifier.features import extract_features
 from routing.decision import decide_model_tier
 from classifier.predict import Classifier
 from classifier.stub import StubClassifier
+from classifier.real import RealClassifier
 
 from inference.small import execute_small
 from inference.medium import execute_medium
@@ -26,7 +27,12 @@ from metrics.prometheus import (
 )
 
 router = APIRouter()
-_classifier = Classifier(StubClassifier())
+try:
+    _classifier = Classifier(RealClassifier())
+    print("✅ Using RealClassifier")
+except Exception as e:
+    print("⚠️ Falling back to StubClassifier:", e)
+    _classifier = Classifier(StubClassifier())
 
 def normalize_text(text: str) -> str:
     """
@@ -83,13 +89,23 @@ def generate(request: GenerateRequest) -> GenerateResponse:
 
     start_time = time.time()
 
-    model_tier = decide_model_tier(
+    model_tier, decision_explanation = decide_model_tier(
         features=features.model_dump(),
+        prompt=request.prompt,
+        context=request.context or [],
         context_token_count=features.context_length,
         risk_level=request.constraints.risk_level,
         max_latency_ms=request.constraints.max_latency_ms,
         classifier=_classifier,
     )
+
+    # Record routing decision source (static / classifier / fallback)
+    if decision_explanation.get("static_rule"):
+        ROUTING_DECISIONS.labels(decision_type="static").inc()
+    elif decision_explanation.get("classifier"):
+        ROUTING_DECISIONS.labels(decision_type="classifier").inc()
+    elif decision_explanation.get("fallback"):
+        ROUTING_DECISIONS.labels(decision_type="fallback").inc()
 
     cache_key = _cache_key(
         model_tier,
@@ -97,6 +113,8 @@ def generate(request: GenerateRequest) -> GenerateResponse:
         request.context or [],
         request.constraints.model_dump(),
     )
+
+    payload = None
     cached = cache_get(cache_key)
 
     if cached:
@@ -116,7 +134,8 @@ def generate(request: GenerateRequest) -> GenerateResponse:
                 cache_hit=True,
             )
         except Exception:
-            pass  # fail open
+            CACHE_MISSES.labels(model_tier=model_tier).inc()
+            cached = None
 
     CACHE_MISSES.labels(model_tier=model_tier).inc()
 
@@ -170,7 +189,11 @@ def generate(request: GenerateRequest) -> GenerateResponse:
     return GenerateResponse(
         response=response_text,
         model_used=model_tier,
-        tokens_used=TokenUsage(input=input_tokens, output=output_tokens),
+        tokens_used=TokenUsage(
+            input=input_tokens,
+            output=output_tokens,
+        ),
         estimated_cost_usd=cost,
         cache_hit=False,
+        debug=decision_explanation if request.debug else None,
     )

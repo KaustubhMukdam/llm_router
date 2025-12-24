@@ -1,0 +1,34 @@
+{"prompt": "Classify this email as spam or not", "context_length": 0, "token_count": 7, "label": "classification"}
+{"prompt": "Is this review positive or negative?", "context_length": 0, "token_count": 6, "label": "classification"}
+{"prompt": "Detect the intent of this message", "context_length": 0, "token_count": 6, "label": "classification"}
+{"prompt": "Why does binary search run in O(log n)?", "context_length": 0, "token_count": 7, "label": "reasoning"}
+{"prompt": "Explain why this SQL query is slow", "context_length": 120, "token_count": 7, "label": "reasoning"}
+{"prompt": "Compare TCP and UDP", "context_length": 0, "token_count": 4, "label": "reasoning"}
+{"prompt": "Explain neural networks step by step", "context_length": 0, "token_count": 6, "label": "generation"}
+{"prompt": "Summarize the following meeting", "context_length": 1200, "token_count": 4, "label": "generation"}
+{"prompt": "Write a professional apology email", "context_length": 0, "token_count": 5, "label": "generation"}
+{"prompt": "Explain whether binary search is faster", "context_length": 0, "token_count": 6, "label": "reasoning"}
+{"prompt": "Explain this error message briefly", "context_length": 40, "token_count": 5, "label": "reasoning"}
+{"prompt": "Generate a short explanation of REST APIs", "context_length": 0, "token_count": 6, "label": "generation"}
+{"prompt": "Summarize this paragraph in one line", "context_length": 80, "token_count": 7, "label": "generation"}
+{"prompt": "Explain this design decision", "context_length": 800, "token_count": 4, "label": "reasoning"}
+{"prompt": "Summarize the discussion", "context_length": 2000, "token_count": 3, "label": "generation"}
+{"prompt": "Is this configuration valid?", "context_length": 1200, "token_count": 4, "label": "classification"}
+{"prompt": "Is this sentiment positive or negative?", "context_length": 0, "token_count": 6, "label": "classification"}
+{"prompt": "Tag this support ticket category", "context_length": 200, "token_count": 5, "label": "classification"}
+{"prompt": "Detect the language of this text", "context_length": 50, "token_count": 6, "label": "classification"}
+{"prompt": "Is this message spam or ham?", "context_length": 0, "token_count": 6, "label": "classification"}
+{"prompt": "Classify the sentiment of this tweet", "context_length": 0, "token_count": 6, "label": "classification"}
+{"prompt": "Detect whether this is a phishing email", "context_length": 0, "token_count": 6, "label": "classification"}
+{"prompt": "Tag this support ticket with a category", "context_length": 40, "token_count": 7, "label": "classification"}
+{"prompt": "Is this text written by a human or AI?", "context_length": 120, "token_count": 8, "label": "classification"}
+{"prompt": "Why does a hash map have O(1) average lookup?", "context_length": 0, "token_count": 8, "label": "reasoning"}
+{"prompt": "Explain why this algorithm is inefficient", "context_length": 120, "token_count": 7, "label": "reasoning"}
+{"prompt": "What are the tradeoffs between REST and GraphQL?", "context_length": 0, "token_count": 6, "label": "reasoning"}
+{"prompt": "Why does this SQL query cause a full table scan?", "context_length": 200, "token_count": 8, "label": "reasoning"}
+{"prompt": "Explain the bug in this code snippet", "context_length": 300, "token_count": 7, "label": "reasoning"}
+{"prompt": "Write a formal resignation email", "context_length": 0, "token_count": 6, "label": "generation"}
+{"prompt": "Draft a project proposal for a fintech startup", "context_length": 0, "token_count": 8, "label": "generation"}
+{"prompt": "Summarize the following technical meeting", "context_length": 900, "token_count": 6, "label": "generation"}
+{"prompt": "Rewrite this paragraph to sound more professional", "context_length": 120, "token_count": 8, "label": "generation"}
+{"prompt": "Generate a user onboarding guide", "context_length": 0, "token_count": 6, "label": "generation"}

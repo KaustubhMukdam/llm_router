@@ -28,7 +28,7 @@ def execute_small(prompt: str, context: List[str]) -> Tuple[str, int, int, float
                     "num_predict": 150
                 }
             },
-            timeout=60,
+            timeout=240,
         )
         resp.raise_for_status()
         data = resp.json()

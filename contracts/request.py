@@ -5,6 +5,7 @@ Defines the incoming payload structure for the /generate endpoint.
 
 from enum import Enum
 from pydantic import BaseModel, Field
+from typing import Optional
 
 
 class RiskLevel(str, Enum):
@@ -26,3 +27,4 @@ class GenerateRequest(BaseModel):
     prompt: str = Field(..., min_length=1)
     context: list[str] = Field(default_factory=list)
     constraints: Constraints = Field(default_factory=Constraints)
+    debug: bool = False

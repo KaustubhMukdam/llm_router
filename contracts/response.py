@@ -5,7 +5,7 @@ Defines the output structure returned by the /generate endpoint.
 
 from enum import Enum
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, Dict, Any
 
 
 class ModelTier(str, Enum):
@@ -28,3 +28,4 @@ class GenerateResponse(BaseModel):
     tokens_used: TokenUsage = Field(default_factory=TokenUsage)
     estimated_cost_usd: float = Field(default=0.0, ge=0.0)
     cache_hit: bool = Field(default=False)
+    debug: Optional[Dict[str, Any]] = None

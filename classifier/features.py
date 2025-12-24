@@ -81,3 +81,38 @@ def extract_features(
         context_length=context_tokens,
         risk_flag=risk_flag,
     )
+
+def estimate_output_tokens(
+    prompt: str,
+    context: list[str],
+    predicted_task: TaskType,
+) -> int:
+    """
+    Rough output token estimator.
+    Conservative on purpose.
+    """
+
+    base = 50  # minimum answer size
+
+    # Prompt length heuristic
+    prompt_tokens = len(prompt.split())
+    base += prompt_tokens * 1.2
+
+    # Context influence
+    context_tokens = sum(len(c.split()) for c in context)
+    base += context_tokens * 0.5
+
+    # Task-based scaling
+    if predicted_task == TaskType.CLASSIFICATION:
+        return int(min(base, 100))
+
+    if predicted_task == TaskType.REASONING:
+        return int(base * 2)
+
+    if predicted_task == TaskType.GENERATION:
+        keywords = ["explain", "step by step", "detailed", "derive", "how"]
+        if any(k in prompt.lower() for k in keywords):
+            return int(base * 4)
+        return int(base * 2)
+
+    return int(base)
