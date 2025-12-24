@@ -4,4 +4,7 @@ test_config.py
 test_decision.py
 .env
 model.pkl
-frontend
+node_modules
+training.jsonl
+scripts
+
