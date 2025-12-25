@@ -138,7 +138,7 @@ The UI visualizes:
 - Routing explanation
 - Latency and cost signals
 
-*Screenshots go here*
+![Frontend Screenshot](./frontend/public/screenshot.png)
 
 ---
 
@@ -169,7 +169,7 @@ That's how real systems win.
 ## 📖 Documentation
 
 - [Architecture Overview](./ARCHITECTURE.md) — deep dive into design decisions
-- API documentation — available at `/docs` when running locally
+- [Experiments & Evidence](./EXPERIMENTS.md) — measured evolution of the routing system
 
 ---
 
@@ -178,7 +178,3 @@ That's how real systems win.
 Contributions are welcome. Please open an issue first to discuss major changes.
 
 ---
-
-## 🔗 Related Resources
-
-- [Experiments & Evidence](./EXPERIMENTS.md)
