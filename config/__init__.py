@@ -133,6 +133,9 @@ def get_config() -> Config:
     Raises:
         RuntimeError: If config hasn't been loaded yet
     """
+    global _config
     if _config is None:
-        raise RuntimeError("Configuration not loaded. Call load_config() first.")
+        # Lazily load default configuration directory when not loaded yet.
+        # This makes `get_config()` safe to call in tests and interactive runs.
+        _config = load_config()
     return _config
